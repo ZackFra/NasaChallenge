@@ -28,7 +28,7 @@ search = (path, file) => {
 }
 
 // list all files in a path and it's subpaths
-list = (path, regex=undefined, files=[]) => {
+function list(path, regex=undefined, files=[]) {
     const fs = require('fs');
     let localFiles = fs.readdirSync(path);
 
