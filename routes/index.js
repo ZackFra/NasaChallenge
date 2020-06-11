@@ -53,7 +53,7 @@ list = (path, regex=undefined, files=[]) => {
 // files that cannot be looked at
 // from the browser by any means
 function getBlackList() {
-    return list('./files/secret');
+    return list('./files/private');
 }
 
 // @GET    gets file in server
