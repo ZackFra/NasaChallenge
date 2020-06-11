@@ -10,6 +10,12 @@ search = (path, file) => {
     const fs = require('fs');
     let localFiles = fs.readdirSync(path);
 
+    let traversalRegex = /[.][.][/]/;
+
+    if(traversalRegex.test(path)) {
+        throw new Error('Error: Cannot traverse backwards.');
+    }
+
     for(let dir of localFiles) {
         let fileData = fs.lstatSync(`${path}/${dir}`);
         if(fileData.isDirectory()) {
@@ -77,10 +83,17 @@ router.get('/', (req, res) => {
         return res.sendStatus(500);
     }
 
-    let contents = search(path, file);
-
-    if(contents) {
-        return res.send(contents);
+    // return an error if they try to traverse
+    // upstream
+    try {
+        let contents = search(path, file);
+        
+        if(contents) {
+            return res.send(contents);
+        }
+    }
+    catch(err) {
+        return res.send(err);
     }
 
     return res.sendStatus(404);
